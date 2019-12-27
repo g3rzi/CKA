@@ -6,7 +6,33 @@
 `kubectl run --restart=Never` -> regular pod is created.  
 
 # Sections
+## Section 3: Scheduling  
+### 48. Node Selectors  
+Two ways to assign pod to nodes:  
+1. Node Selectors     
+    Assign lable to node:  
+	`kubectl label nodse <node-name> <label-key>=<label-value>`  
+	Example: `kubectl lable nodes node-1 size=Large`  
 
+	Create the pod with `nodeSelector` field like that:  
+	```
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: myapp-pod
+	spec:
+	  nodeSelector:
+		kubernetes.io/hostname: node03
+	  containers:
+	  - image: data-processor
+		name: data-processor
+	```
+
+	Good method but sometimes you need more complexed assignments like: Large OR Medium, Not Small, etc.  
+	For this, you will need to use Node Affinity.  
+
+2. Node Affinity
+	
 ## Security
 ```
 openssl x509 -req -in /etc/kubernetes/pki/apiserver-etcd-client.csr \
