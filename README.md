@@ -46,7 +46,7 @@ openssl x509 -req -in /etc/kubernetes/pki/apiserver-etcd-client.csr \
 `openssl x509 -in <certificate path> -text -noout`  
 
 
-116. Certificates API  
+### 116. Certificates API  
 `openssl genrsa -out jane.key 2048`  
 `openssl req -new -key jane.key -subj "/CN=jane" -out jane.csr`  
 Creating jane-csr.yaml:  
@@ -60,6 +60,6 @@ kind: CertificateSigningRequest
 
 
 ## Network:  
-	160-161:  
-		`cat /etc/cni/net.d/` -> check the config file for the network provider  
-		`ip addr show weave` -> show ip addresses of the provider  
+### 159. CNI weave   
+`cat /etc/cni/net.d/` -> check the config file for the network provider  
+`ip addr show weave` -> show ip addresses of the provider  
