@@ -104,3 +104,142 @@ We can see the DNS configuration in the kubelet configuration file:
 ### 167. Practice Test - Explore DNS
 Check what dns domain/zone configured on the cluster run:
 `kubectl describe configmaps coredns -n kube-system`  
+
+### 168. Ingress
+#### Ingress Controller
+
+```
+#Deployment of the nginx-ingress image
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: nginx-ingress
+    template:
+      metadata:
+        labels:
+          name: nginx-ingress
+    spec:
+      containers:
+        - name: nginx-ingress-controller
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.21.0
+        args:
+          - /nginx-ingress-controller
+          - --configmap=$(POD_NAMESPACE)/nginx-coinfguration
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        ports:
+          - name: http
+            containerPort: 80
+          - name: https
+            containerPort: 443
+```
+
+```
+# ConfiguMap to feed nginx configuration data
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-coinfguration
+```
+
+```
+# Service to expose the deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-ingress
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    name: nginx-ingress
+```
+
+```
+# The service account should have Roles, ClusterRoles and RoleBindings to access the above objects
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-ingress-serviceaccount
+```	
+#### Ingress Resource
+	
+	
+Ingress-wear.yaml
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metdata:
+  name: ingress-wear
+spec:
+  backend:
+    serviceName: wear-service
+	servicePort: 80
+```
+		
+#### Rules
+##### First method: Split traffic by URL (one rule) 
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metdata:
+  name: ingress-wear-watch
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /wear
+        backend:
+          serviceName: wear-service
+          servicePort: 80
+      - path: /watch
+        backend:
+          serviceName: watch-service
+          servicePort: 80  	
+```
+	
+##### Second method: Using domain names (two rules)
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metdata:
+  name: ingress-wear-watch
+spec:
+  rules:
+  - host: wear.my-online-store.com
+    http:
+      paths:
+      - backend:
+          serviceName: wear-service
+          servicePort: 80
+    - host: watch.my-online-store.com
+      http:
+        paths:
+        - backend:
+            serviceName: watch-service
+            servicePort: 80   
+```
+	
+	`kubectl describe ingress ingress-wear-watch`
+	The `Default backend` is for the case where a user tries to access a URL that does not match any of the rules.
+	The user is directed to the service specified as the default backend. You must deploy the specified service.
