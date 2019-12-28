@@ -22,7 +22,7 @@ Two ways to assign pod to nodes:
 	  name: myapp-pod
 	spec:
 	  nodeSelector:
-		kubernetes.io/hostname: node03
+	    kubernetes.io/hostname: node03
 	  containers:
 	  - image: data-processor
 		name: data-processor
