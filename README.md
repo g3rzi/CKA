@@ -66,3 +66,13 @@ kind: CertificateSigningRequest
 ### 161. Practice Test Deploy Network Solution
  
 `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"` -> Install weave-network
+
+### 163. Service Networking		
+```
+kubectl get pods -o wide
+kubectl get service
+# Showing the rules from the service to the pod's port.
+iptables -L -t net | grep db-service
+# Showing what proxy is being used
+cat /var/log/kube-proxy.log
+```
