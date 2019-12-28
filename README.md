@@ -93,14 +93,14 @@ Most of the time it will be iptables.
 
 ### 166. CoreDNS in Kubernetes  
 Configuration file of the DNS:    
-`cat /etc/coredns/Corefile`
-This file can be seen using:   
-`kubectl get configmap -n kube-system`
+`cat /etc/coredns/Corefile`  
+This file can be seen using:     
+`kubectl get configmap -n kube-system`  
 
 The DNS also creates a service named: kube-dns to be available through the cluster.
 We can see the DNS configuration in the kubelet configuration file:  
-`/var/lib/kubelet/config.yaml`
+`/var/lib/kubelet/config.yaml`  
 
 ### 167. Practice Test - Explore DNS
 Check what dns domain/zone configured on the cluster run:
-`kubectl describe configmaps coredns -n kube-system`
+`kubectl describe configmaps coredns -n kube-system`  
