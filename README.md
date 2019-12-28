@@ -235,11 +235,11 @@ spec:
     - host: watch.my-online-store.com
       http:
         paths:
-        - backend:
+        - backend: 
             serviceName: watch-service
             servicePort: 80   
 ```
 	
-	`kubectl describe ingress ingress-wear-watch`
-	The `Default backend` is for the case where a user tries to access a URL that does not match any of the rules.
-	The user is directed to the service specified as the default backend. You must deploy the specified service.
+`kubectl describe ingress ingress-wear-watch`
+The `Default backend` is for the case where a user tries to access a URL that does not match any of the rules.
+The user is directed to the service specified as the default backend. You must deploy the specified service.
