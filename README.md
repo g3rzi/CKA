@@ -60,6 +60,6 @@ kind: CertificateSigningRequest
 
 
 ## Network:  
-### 159. CNI weave   
+### 159 & 160. CNI weave   
 `cat /etc/cni/net.d/` -> check the config file for the network provider  
 `ip addr show weave` -> show ip addresses of the provider  
