@@ -25,7 +25,7 @@ Two ways to assign pod to nodes:
 	    kubernetes.io/hostname: node03
 	  containers:
 	  - image: data-processor
-		name: data-processor
+	    name: data-processor
 	```
 
 	Good method but sometimes you need more complexed assignments like: Large OR Medium, Not Small, etc.  
