@@ -63,3 +63,6 @@ kind: CertificateSigningRequest
 ### 159 & 160. CNI weave   
 `cat /etc/cni/net.d/` -> check the config file for the network provider  
 `ip addr show weave` -> show ip addresses of the provider  
+### 161. Practice Test Deploy Network Solution
+ 
+`kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"` -> Install weave-network
