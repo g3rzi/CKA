@@ -76,3 +76,17 @@ iptables -L -t net | grep db-service
 # Showing what proxy is being used
 cat /var/log/kube-proxy.log
 ```
+
+### 164. Practice Test - Service Networking		
+
+Check the range of IP addresses configured for PODs on the cluster:  
+The network is configured with weave. Check the weave pods logs using command `kubectl logs -n kube-system <weave-pod-name> weave` and look for ipalloc-range
+
+Check the IP range configured for the services within the cluster:  
+Inspect the setting on kube-api server by running on command `ps -aux | grep kube-api`
+You should find something like that:  
+`--service-cluster-ip-range=10.96.0.0/12`
+
+Checl what type of proxy the kube-proxy configured to use:  
+Check the logs of the kube-proxy pods. Command: `kubectl logs -n kube-system <kube-proxy pod name>`
+Most of the time it will be iptables.
