@@ -92,9 +92,9 @@ Check the logs of the kube-proxy pods. Command: `kubectl logs -n kube-system <ku
 Most of the time it will be iptables.
 
 ### 166. CoreDNS in Kubernetes  
-Configuration file of the DNS:  
+Configuration file of the DNS:    
 `cat /etc/coredns/Corefile`
-This file can be seen using:  
+This file can be seen using:   
 `kubectl get configmap -n kube-system`
 
 The DNS also creates a service named: kube-dns to be available through the cluster.
