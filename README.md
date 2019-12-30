@@ -110,7 +110,7 @@ Check what dns domain/zone configured on the cluster run:
 
 ```
 #Deployment of the nginx-ingress image
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-ingress-controller
