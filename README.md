@@ -243,3 +243,16 @@ spec:
 `kubectl describe ingress ingress-wear-watch`
 The `Default backend` is for the case where a user tries to access a URL that does not match any of the rules.
 The user is directed to the service specified as the default backend. You must deploy the specified service.
+
+
+### 217. Practice Test - Worker Node Failure 
+Check kubelet status on the nodes:  
+`journalctl -u kubelet`  
+`service kubelet status`  
+    
+Related files to kubelet:  
+ ```
+/etc/kubernetes/kubelet.conf  
+/etc/systemd/system/kubelet.service.d/10-kubeadm.conf  
+/var/lib/kubelet/config.yaml -> IMPORTANT, contains kubelet settings  
+```
