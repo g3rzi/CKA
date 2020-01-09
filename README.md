@@ -32,8 +32,49 @@ Two ways to assign pod to nodes:
 	For this, you will need to use Node Affinity.  
 
 2. Node Affinity
-	
-## Security
+
+## Section 6: Cluster Maintenance
+### 105. Backup and Restore Methods
+When configure ETCD, it is possible to configure where all the data will be store.  
+It appears in the `etcd.service` (which can be seen by `cat /etc/kubernetes/manifests/etcd.yaml`) under the flag `--data-dir=/var/lib/etcd`.  
+
+We can take a snapshot of the database by running:  
+`ETCDCTL_API=3 etcdctl snapshot save snapshot.db`   
+
+Remember to use it will all the details:  
+```
+ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
+              --endpoints=https://127.0.0.1:2379
+	      --cacert=/etc/etcd/ca.crt \
+	      --cert=/etc/etcd/etcd-server.crt \
+	      --key=/etc/etcd/etcd-server.key
+```
+To restore the backup:  
+Stop the service:  
+`service kube-apiserver stop`  
+Then run:
+```
+ETCDCTL_API=3 etcdctl snapshot restore snapshot.db \
+--data-dir /var/lib/etcd-from-backup \
+--initial-cluster master-1=https://192.168.5.11:2380,master-2=https://192.168.5.12:2380 \
+--initial-advertise-peer-urls https://${INTERNAL_IP}:2380
+```
+
+Then we will update `etcd.service` file with: 
+```
+--initial-cluster-token etcd-cluster-1 \
+...
+--data-dir=/var/lib/etcd-from-backup
+```
+
+Then restart the daemon:  
+```
+systemctl daemon-reload
+service etcd restart
+service kube-apiserver start
+```
+
+## Section 7: Security
 ```
 openssl x509 -req -in /etc/kubernetes/pki/apiserver-etcd-client.csr \
 -CA /etc/kubernetes/pki/etcd/ca.crt \
