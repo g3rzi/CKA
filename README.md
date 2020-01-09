@@ -256,3 +256,7 @@ Related files to kubelet:
 /etc/systemd/system/kubelet.service.d/10-kubeadm.conf  
 /var/lib/kubelet/config.yaml -> IMPORTANT, contains kubelet settings  
 ```
+
+### 222. Practice Test - Advanced Kubetl Commands
+Find user aws-user inside a context:  
+`kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.contexts[?(@.context.user=='aws-user')].name}" > /opt/outputs/aws-context-name`
