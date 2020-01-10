@@ -375,3 +375,9 @@ Related files to kubelet:
 ### 222. Practice Test - Advanced Kubetl Commands
 Find user aws-user inside a context:  
 `kubectl config view --kubeconfig=my-kube-config -o jsonpath="{.contexts[?(@.context.user=='aws-user')].name}" > /opt/outputs/aws-context-name`
+
+## Section 15: Mock Exams
+### 225. Mock Exam - 2
+
+6. > Create a new deployment called nginx-deploy, with image nginx:1.16 and 1 replica. Record the version. Next upgrade the deployment to version 1.17 using rolling update. Make sure that the version upgrade is recorded in the resource annotation.
+To solve it we will need to use `--record` option when create the deployment. To update version we can do it with `kubectl edit` or `kubectl set image`.  
