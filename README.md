@@ -2,8 +2,8 @@
 
 # General commands
 
-`kubectl run --dry-run=false` -> of true, it prints the object without sending it.  
-`kubectl run --restart=Never` -> regular pod is created.  
+`kubectl run --dry-run=false --restart=Never -o yaml --image nginx nginx` -> will print the object without sending it and only pod will be created (not deployment).  
+`--restart=Never` => will create Pod, not Deployment.
 
 # Sections
 ## Section 3: Scheduling  
