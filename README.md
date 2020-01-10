@@ -11,6 +11,11 @@ kubectl create role role-john -n development  --verb=create,list,get,update,dele
 kubectl create rolebinding binding-john -n development --role=role-john --user=john
 ```
 
+Creating user in kubeconfig:  
+```
+kubectl config --kubeconfig=config-demo set-credentials john --client-certificate=/root/john.crt --client-key=/root/john.key
+kubectl config --kubeconfig=config-demo set-context john-ctx --cluster=kubernetes --namespace=development
+```
 
 # Sections
 ## Section 3: Scheduling  
