@@ -381,3 +381,9 @@ Find user aws-user inside a context:
 
 6. > Create a new deployment called nginx-deploy, with image nginx:1.16 and 1 replica. Record the version. Next upgrade the deployment to version 1.17 using rolling update. Make sure that the version upgrade is recorded in the resource annotation.
 To solve it we will need to use `--record` option when create the deployment. To update version we can do it with `kubectl edit` or `kubectl set image`.  
+
+View the history and update the image:
+```
+kubectl rollout history deployment nginx-deploy
+kubectl set image deployment/nginx-deploy nginx-deploy=nginx:1.17 --record
+```
