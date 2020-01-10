@@ -3,7 +3,7 @@
 # General commands
 
 `kubectl run --dry-run=false --restart=Never -o yaml --image nginx nginx` -> will print the object without sending it and only pod will be created (not deployment).  
-`--restart=Never` => will create Pod, not Deployment.
+`--restart=Never` => will create Pod, not Deployment.  
 
 # Sections
 ## Section 3: Scheduling  
@@ -98,6 +98,29 @@ kind: CertificateSigningRequest
 `kubectl get csr`  
 `kubectl certificate approve jane`  
 
+
+### 117. TLS in Kubernetes - Certificate Creation  
+Certificate Authority (CA):  
+```
+# Generate private key ca.key
+openssl genrsa -out ca.key 2048
+# Generate CertificateSigningRequest ca.csr
+openssl req -new -key ca.key -subj "/CN=Kubernetes-CA" -out ca.csr
+# Sign certificate  
+openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt
+````
+
+
+Admin user:  
+```
+# Generate private key admin.key
+openssl genrsa -out ca.key 2048
+# Generate CertificateSigningRequest admin.csr
+openssl req -new -key admin.key -subj "/CN=kube-admin/O=system:masters" -out admin.csr
+# Sign certificate  
+# Notice that we are signing with -CAkey
+openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt
+```
 
 
 ## Network:  
