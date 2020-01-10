@@ -5,6 +5,13 @@
 `kubectl run --dry-run=false --restart=Never -o yaml --image nginx nginx` -> will print the object without sending it and only pod will be created (not deployment).  
 `--restart=Never` => will create Pod, not Deployment.  
 
+Creating role and rolebindings for a user:  
+```
+kubectl create role role-john -n development  --verb=create,list,get,update,delete --resource=pods 
+kubectl create rolebinding binding-john -n development --role=role-john --user=john
+```
+
+
 # Sections
 ## Section 3: Scheduling  
 ### 48. Node Selectors  
@@ -121,7 +128,46 @@ openssl req -new -key admin.key -subj "/CN=kube-admin/O=system:masters" -out adm
 # Notice that we are signing with -CAkey
 openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt
 ```
+### 121. Certificates API
+Instead of the user sign the certificate by himself, he can use Kubernetes API to create is and reviewed by the administrators:
+1. Create CertificateSigningRequest Object
+2. Review Requests
+3. Approve Requests
+4. Share Certs to Users
 
+Create private key with CSR:  
+```
+openssl genrsa -out jane.key 2048
+openssl req -new -key jane.key -subj "/CN=jane" -out jane.csr
+```
+
+Create CertificateSigningRequest Object:  
+```
+apiVersion: certificates.k8s.io/v1beta1
+kind: CertificateSigningRequest
+metadata:
+  name: jane
+spec:
+  groups:
+  - system:authenticated
+  usages:
+  - digital signature
+  - key encipherment
+  -server auth
+  request:
+    # cat jane.csr | base64
+    <base64_of_jane.csr_content>
+```
+
+Administrators can see the pending certificates and approve it:  
+```
+# View request
+kubectl get csr
+# Approve request
+kubectl certificate approve jane
+```
+
+All the operations of the certificates are done by the Controller Manager. It as controllers in it called "CSR-APPROVING" and "CSR-SIGNING".  
 
 ## Network:  
 ### 159 & 160. CNI weave   
