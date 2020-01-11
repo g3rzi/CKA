@@ -17,6 +17,23 @@ kubectl config --kubeconfig=config-demo set-credentials john --client-certificat
 kubectl config --kubeconfig=config-demo set-context john-ctx --cluster=kubernetes --namespace=development
 ```
 
+Create object without writing it to file:  
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: super-user-pod
+spec:
+  containers:
+  - name: redis
+    image: busybox:1.28
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+EOF
+```
+
 # Sections
 ## Section 3: Scheduling  
 ### 48. Node Selectors  
