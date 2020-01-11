@@ -176,10 +176,29 @@ spec:
   - digital signature
   - key encipherment
   -server auth
-  request:
+  request: 
     # cat jane.csr | base64
-    <base64_of_jane.csr_content>
+    <base64_of_jane.csr_content_WITHOUT_'\n'>
 ```
+
+Another option is like that:  
+```
+kubectl apply -f - <<EOF
+apiVersion: certificates.k8s.io/v1beta1
+kind: CertificateSigningRequest
+metadata:
+  name: jane
+spec:
+  groups:
+  - system:authenticated
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth
+  request: $(cat jane.csr | base64 | tr -d '\n')
+EOF
+```
+
 
 Administrators can see the pending certificates and approve it:  
 ```
