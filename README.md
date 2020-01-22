@@ -93,6 +93,20 @@ You can also use the `NotIn` operator like that:
           - Small
 ```
 ## Section 6: Cluster Maintenance
+
+### 100. Practice Test - OS Upgrades
+To mark node as unschedulable and remove any pods from it run:  
+`kubectl drain node01 --ignore-daemonsets`
+
+One reason if it failed is because there is an unmanaged Pod, then you need to use the `--force` flag.  
+To make the node scheduled again run:  
+`kubectl uncordon node01`  
+
+To just make the node as unschedulable without removing any workload run:  
+`kubectl cordon node01`  
+
+
+
 ### 105. Backup and Restore Methods
 When configure ETCD, it is possible to configure where all the data will be store.  
 It appears in the `etcd.service` (which can be seen by `cat /etc/kubernetes/manifests/etcd.yaml`) under the flag `--data-dir=/var/lib/etcd`.  
