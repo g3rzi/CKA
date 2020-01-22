@@ -61,6 +61,29 @@ Two ways to assign pod to nodes:
 	For this, you will need to use Node Affinity.  
 
 2. Node Affinity
+Node affinity allows pod placement on specific nodes.  
+This configuration allows pods to run on nodes with the labels "size=Large" or "size=Medium".
+The `In` operator make sure the pod will be places on a node whose label size has any value in the list of values specified.
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+spec:
+  containers:
+  - image: data-processor
+    name: data-processor
+affinity:
+  nodeAffinity:
+    requireDuringSchedulingIngnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: size
+          operator: In
+          values:
+          - Large
+          - Medium
+```
 
 ## Section 6: Cluster Maintenance
 ### 105. Backup and Restore Methods
