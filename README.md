@@ -85,6 +85,13 @@ affinity:
           - Medium
 ```
 
+You can also use the `NotIn` operator like that:  
+```
+        - key: size
+          operator: NotIn
+          values:
+          - Small
+```
 ## Section 6: Cluster Maintenance
 ### 105. Backup and Restore Methods
 When configure ETCD, it is possible to configure where all the data will be store.  
