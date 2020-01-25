@@ -36,6 +36,34 @@ EOF
 
 # Sections
 ## Section 3: Scheduling  
+
+### 47. Taints and Tolerations
+`kubectl taint nodes node-name key=value:taint-effect`
+
+The taint-effect is what happens to PODs that DO NOT TOLERATE this taint.
+The options are:
+`NoSchedule` -> Pod won't schedule
+`PreferNoSchedule` -> The system will try to avoid placing a pod on the node but that is not guaranteed.
+`NoExecute` -> New pods will not be scheduled on the node and existing pods on the node if any will be evicted if they do not tolearate the taint.
+
+Example:
+`kubectl taint nodes node1 app=blue:NoSchedule`
+
+```
+apiVersion:
+kind: Pod
+metadata:
+  name: myapp-pod
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+  tolerations:
+  - key: app
+    operator: "Equal"
+    value: blue
+    effect: NoSchedule
+```
 ### 48. Node Selectors  
 Two ways to assign pod to nodes:  
 1. Node Selectors     
