@@ -26,6 +26,10 @@ Answer should be in the format: InternalIP of master<space>InternalIP of node1<s
 kubectl get nodes -o=jsonpath='{.items[*].status.addresses[0].address}' > /root/node_ips
 ```
 
+Alternative solution:
+`kubectl get nodes -o=jsonpath='{.items[*].status.addresses[?(@.type == "InternalIP")].address}' >  /root/node_ips`
+
+
 ### 3. Create a pod called multi-pod with two containers.
 Container 1, name: alpha, image: nginx
 Container 2: beta, image: busybox, command sleep 4800.
@@ -39,6 +43,7 @@ name: beta
 
 ```
 kubectl run --generator=run-pod/v1 --dry-run --image nginx multi-pod -o yaml > pod2.yaml
+kubectl run --generator=run-pod/v1 multi-pod --image busybox --env=name=beta --dry-run --command "sleep 4800" -o yaml
 
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -161,3 +166,17 @@ spec:
     effect: "NoSchedule"
 EOF
 ```
+
+### 7. Create a pod called hr-pod in hr namespace belonging to the production environment and frontend tier .
+image: redis:alpine
+`kubectl run --generator=run-pod/v1 -n hr hr-pod --image redis:alpine --labels=environment=production,tier=frontend`
+
+### 8. A kubeconfig file called super.kubeconfig has been created in /root. There is something wrong with the configuration. Troubleshoot and fix it.
+
+Wrong port
+`kubectl get pods--kubeconfig=/root/super.kubeconfig`
+
+### 9. We have created a new deployment called nginx-deploy. scale the deployment to 3 replicas. Has the replica's increased? Troubleshoot the issue and fix it.
+
+`kubectl get pods -n kube-system`
+Check the controller manager. There is a typo.
