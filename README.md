@@ -64,6 +64,10 @@ spec:
     value: blue
     effect: NoSchedule
 ```
+
+To remove taint from the master run: `kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-`.  
+Where "node-role.kubernetes.io/master" is the key and "NoSchedule" is the effect.  
+
 ### 48. Node Selectors  
 Two ways to assign pod to nodes:  
 1. Node Selectors     
