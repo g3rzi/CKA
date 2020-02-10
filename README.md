@@ -124,6 +124,40 @@ You can also use the `NotIn` operator like that:
           values:
           - Small
 ```
+
+
+## Section 5: Application Lifecycle Management
+
+### 77. Rolling Updates and Rollbacks
+
+To states of your rollout run:  
+`kubectl rollout status deployment/myapp-deployment`  
+
+To see the history of the rollout run:  
+`kubectl rollout history deployment/myapp-deployment`  
+The problem with that for some period the application is down and no one can access it.  
+
+Two rollout of deployment startegy:  
+1. Recreate startegy (not default)  
+Destroy all the deployments and then create them.
+
+2. RollingUpdate   
+Take down older version and create new one one by one.  
+
+
+To update image you can use the `kubectl apply -f file.yaml` command or use `kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1`. The latter will result change in the deployment definition file.  
+
+When running `kubectl describe deployment myapp` you will notice a difference between the two startegies. In the events you will see how the "recreate" take all the applications down and then up.  
+You have the field named `StartegyType` where you will the name of the strategy.  
+
+
+When you upgrage your application, Kubernetes create new replica set with the same amount of pods you had and create them with the new version and take down the ones with the old image.  
+
+If you need to rollback to the previous revious you can run `kubectl rollout undo deployment/myapp-deployment`.   
+
+Summarize commands:
+
+
 ## Section 6: Cluster Maintenance
 
 ### 100. Practice Test - OS Upgrades
