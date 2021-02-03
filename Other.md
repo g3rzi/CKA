@@ -28,3 +28,14 @@ spec:
     securityContext:
       allowPrivilegeEscalation: false
 ```
+
+
+Get the IP of the first on the list:
+```
+kubectl get nodes -o jsonpath='{ $.items[?(@.metadata.name=="controlplane")].status.addresses[?(@.type=="InternalIP")].address }{"\n"}
+```
+
+Get the ALL IPs:
+```
+kubectl get nodes -o jsonpath='{ $.items[*].status.addresses[?(@.type=="InternalIP")].address }{"\n"}
+```
